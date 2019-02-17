@@ -1,0 +1,24 @@
+.featured_item {
+    position: relative;
+    a {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        text-decoration: none;
+        right: 0;
+        .featured_caption{
+            color:  #FFF;
+            top: 0;
+            width: 100%;
+            padding:  20px;
+            font-weight: 300;
+            font-size: 28px;
+            box-sizing: border-box;
+        }
+    }
+    .featured_image {
+        height: 300px;
+        background-size: cover !important;
+        background-repeat: no-repeat !important;  
+    }
+}
