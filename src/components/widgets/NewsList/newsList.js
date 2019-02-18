@@ -17,12 +17,12 @@ class NewsList extends Component {
         amount: this.props.amount
     }
 
-    componentWillMount(){
+    componentWillMount() {
         this.request(this.state.start,this.state.end)
     }
 
     request = (start,end) => {
-
+        //feach teams
         if(this.state.teams.length < 1){
             axios.get(`${URL}/teams`)
             .then( response => {
@@ -31,26 +31,21 @@ class NewsList extends Component {
                 })
             })
         }
-
-
+        //feach articles 
         axios.get(`${URL}/articles?_start=${start}&_end=${end}`)
         .then( response =>{
             this.setState({
                 //Overwrite values
-                items: [...this.state.items,...response.data]
+                items: [...this.state.items,...response.data],
+                start,
+                end
             })
         })
     }
 
     loadMore = () => {
         let end = this.state.end + this.state.amount;   
-        console.log(this.state.end, end)
-
         this.request(this.state.end,end)
-        //**** Added  */
-        this.setState({
-            end
-        })
     }
 
     renderNews = (type) => {
