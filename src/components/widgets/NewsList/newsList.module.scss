@@ -23,3 +23,33 @@
     opacity: 1;
     transform: translateX(0%)
 }
+
+.newsListMain_item{
+    a{
+        text-decoration: none;
+    }
+}
+
+.flex_wrapper{
+    display: flex;
+    border-bottom: 2px solid #d5d5d5;
+    background: #fff;
+    .left{
+        background-size: cover !important;
+        div{
+            width: 90px;
+            height: 90px;
+            background-size: 40px !important;
+            background-repeat: no-repeat !important;
+            background-position: center center
+        }
+    }
+    .right{
+        flex-grow: 1px;
+        padding: 10px;
+        h2{
+            color: #525252;
+            font-size: 12px;
+        }
+    }
+}
