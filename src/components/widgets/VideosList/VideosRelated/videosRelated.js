@@ -3,7 +3,7 @@ import styles from '../videosList.module.scss'
 import VideoListTemplate from '../videosListTemplate';
 
 const VideosRelated = (props) => {
-    console.log(props);
+    //console.log(props);
     return (
         <div className={styles.relatedWrapper}>
             <VideoListTemplate 

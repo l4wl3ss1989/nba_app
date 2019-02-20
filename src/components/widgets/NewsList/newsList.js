@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { URL } from '../../../config';
+import { firebaseTeams, firebaseArticles, firebaseLooper } from '../../../firebase';
+//import axios from 'axios';
+//import { URL } from '../../../config';
 import styles from './newsList.module.scss'
 import Button from '../Buttons/buttons';
 import CardInfo from '../CardInfo/cardInfo';
@@ -22,30 +23,50 @@ class NewsList extends Component {
     }
 
     request = (start,end) => {
-        //feach teams
+        
         if(this.state.teams.length < 1){
-            axios.get(`${URL}/teams`)
-            .then( response => {
+            //feach teams
+            firebaseTeams.once('value')
+            .then((snapShot) => {
+                const teams = firebaseLooper(snapShot);
                 this.setState({
-                    teams: response.data
+                    teams
                 })
             })
+        //     axios.get(`${URL}/teams`)
+        //     .then( response => {
+        //         this.setState({
+        //             teams: response.data
+        //         })
+        //     })
         }
         //feach articles 
-        axios.get(`${URL}/articles?_start=${start}&_end=${end}`)
-        .then( response =>{
+        firebaseArticles.orderByChild("id").startAt(start).endAt(end).once('value')
+        .then((snapShot) => {
+            const articles = firebaseLooper(snapShot);
             this.setState({
-                //Overwrite values
-                items: [...this.state.items,...response.data],
+                items: [...this.state.items,...articles],
                 start,
                 end
             })
         })
+        .catch(err =>{
+            console.log(err)
+        })
+        // axios.get(`${URL}/articles?_start=${start}&_end=${end}`)
+        // .then( response =>{
+        //     this.setState({
+        //         //Overwrite values
+        //         items: [...this.state.items,...response.data],
+        //         start,
+        //         end
+        //     })
+        // })
     }
 
     loadMore = () => {
         let end = this.state.end + this.state.amount;   
-        this.request(this.state.end,end)
+        this.request(this.state.end + 1 ,end) //db starts at 0
     }
 
     renderNews = (type) => {
