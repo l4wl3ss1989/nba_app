@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React from 'react';
+import { Switch } from 'react-router-dom';
 
 import Home from './components/Home/home';
 import Layout from './hoc/Layout/layout';
@@ -9,23 +9,26 @@ import VideoArticle from './components/Articles/Videos/Video/index';
 import NewsMain from './components/Articles/News/Main/index';
 import VideosMain from './components/Articles/Videos/Main/index';
 import SingIn from './components/signIn/signIn';
+import Dashboard from './components/Dashboard/dashbord';
 
-class Routes extends Component {
-    render() {
-        return (
-            <Layout>
-                <Switch>
-                    <Route path="/" exact component={Home} />
-                    <Route path="/news" exact  component={NewsMain}/>
-                    <Route path="/videos" exact  component={VideosMain}/>
-                    <Route path="/articles/:id" exact  component={NewsArticle}/>
-                    <Route path="/videos/:id" exact  component={VideoArticle}/>  
-                    <Route path="/sign-in/" exact  component={SingIn}/>                    
-                </Switch>
-            </Layout>
-            
-        );
-    }
+import PrivateRoutes from './components/AuthRoutes/privateRoutes';
+import PublicRoutes from './components/AuthRoutes/publicRoutes';
+
+const Routes = (props) =>{
+    return (
+        <Layout user={props.user}>
+            <Switch>
+                <PublicRoutes {...props} restricted={false} path="/" exact component={Home} />
+                <PublicRoutes {...props} restricted={false} path="/news" exact  component={NewsMain}/>
+                <PublicRoutes {...props} restricted={false} path="/videos" exact  component={VideosMain}/>
+                <PublicRoutes {...props} restricted={false} path="/articles/:id" exact  component={NewsArticle}/>
+                <PublicRoutes {...props} restricted={false} path="/videos/:id" exact  component={VideoArticle}/>  
+                <PublicRoutes {...props} restricted={true} path="/sign-in/" exact  component={SingIn}/>  
+                <PrivateRoutes {...props} path="/dashboard/" exact  component={Dashboard}/>
+            </Switch>
+        </Layout>
+        
+    );
 }
 
 export default Routes;
